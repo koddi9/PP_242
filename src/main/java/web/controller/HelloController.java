@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import web.service.ServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,17 +27,17 @@ public class HelloController {
 	}
 
 	@GetMapping(value = "/cars")
-	public String printCars(ModelMap model,@RequestParam(name="count",required = false) String count) {
-		List<Car> cars = new ArrayList<>();
-		Integer countInt=(Integer) model.getAttribute("count");
-		cars.add(new Car("BMW",5,"gray"));
-		cars.add(new Car("2",2,"black"));
-		cars.add(new Car("3",3,"white"));
-		cars.add(new Car("4",4,"green"));
-		cars.add(new Car("5",5,"red"));
-		cars=cars.stream().limit(Integer.parseInt(count)).collect(Collectors.toList());
+	public String printCars(@RequestParam(name="count",required = false) String count,ModelMap model) {
+//		Integer countInt=(Integer) model.getAttribute("count");
+		ServiceImpl service = new ServiceImpl();
+		List<Car> cars;
+
+		if (count==null){
+			count="5";
+		}
+		cars=service.getCarsList(Integer.parseInt(count));
+
 		model.addAttribute("cars", cars);
 		return "cars";
 	}
-	
 }
