@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/main")
 public class HelloController {
 
-	@GetMapping(value = "/")
+	@GetMapping(value = "")
 	public String printWelcome(ModelMap model) {
 		List<String> messages = new ArrayList<>();
-		messages.add("Hello!");
+		messages.add("Привет!");
 		messages.add("I'm Spring MVC application");
 		messages.add("5.2.0 version by sep'19 ");
 		model.addAttribute("messages", messages);
@@ -30,13 +30,7 @@ public class HelloController {
 	public String printCars(@RequestParam(name="count",required = false) String count,ModelMap model) {
 //		Integer countInt=(Integer) model.getAttribute("count");
 		ServiceImpl service = new ServiceImpl();
-		List<Car> cars;
-
-		if (count==null){
-			count="5";
-		}
-		cars=service.getCarsList(Integer.parseInt(count));
-
+		List<Car> cars=service.getCarsList(count);
 		model.addAttribute("cars", cars);
 		return "cars";
 	}
