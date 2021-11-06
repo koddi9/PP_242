@@ -1,17 +1,14 @@
 package web.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import web.model.User;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.util.List;
 
-@Repository
-public class dao implements Idao{
+@Repository("daoImpl")
+public class DaoImpl implements IDao {
 
     @PersistenceContext(unitName = "getEntityManagerFactory")
     private EntityManager entityManager;
@@ -24,7 +21,16 @@ public class dao implements Idao{
     @Override
     @SuppressWarnings("unchecked")
     public List<User> listUsers() {
-        return entityManager.createQuery("select from User").getResultList();
+        return entityManager.createQuery("from User").getResultList();
     }
 
+    @Override
+    public void delete(User user) {
+        entityManager.detach(user);
+    }
+
+    @Override
+    public void update(User user) {
+        entityManager.detach(user);
+    }
 }

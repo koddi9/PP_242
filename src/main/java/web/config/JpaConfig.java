@@ -6,9 +6,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -17,20 +20,31 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@PropertySource("classpath:db.properties")
 @EnableTransactionManagement
+@PropertySource("classpath:db.properties")
 @ComponentScan("web")
 public class JpaConfig {
 
-//    @Autowired
-//    private Environment env;
 
+//    private Environment env;
+//
+//    @Autowired
+//    public JpaConfig(Environment environment) {
+//        this.env = environment;
+//    }
+
+
+    @Bean
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(Environment.getProperties().getProperty("db.driver"));
-        dataSource.setUrl(Environment.getProperties().getProperty("db.url"));
-        dataSource.setUsername(Environment.getProperties().getProperty("db.username"));
-        dataSource.setPassword(Environment.getProperties().getProperty("db.password"));
+//        dataSource.setDriverClassName(Environment.getProperties().getProperty("db.driver"));
+//        dataSource.setUrl(Environment.getProperties().getProperty("db.url"));
+//        dataSource.setUsername(Environment.getProperties().getProperty("db.username"));
+//        dataSource.setPassword(Environment.getProperties().getProperty("db.password"));
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/db_for23?verifyServerCertificate=false&useSSL=false&requireSSL=false&useLegacyDatetimeCode=false&amp&serverTimezone=UTC");
+        dataSource.setUsername("root");
+        dataSource.setPassword("localdb");
         return dataSource;
     }
 
@@ -38,14 +52,21 @@ public class JpaConfig {
     public LocalContainerEntityManagerFactoryBean getEntityManagerFactory() {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(getDataSource());
-        factoryBean.setPackagesToScan(new String[]{"web.model"});
+        factoryBean.setPackagesToScan("web.model");
 
         Properties props=new Properties();
-        props.setProperty("hibernate.show_sql", Environment.getProperties().getProperty("hibernate.show_sql"));
-        props.setProperty("hibernate.hbm2ddl.auto", Environment.getProperties().getProperty("hibernate.hbm2ddl.auto"));
+        props.put("hibernate.show_sql", "true");
+        props.put("hibernate.hbm2ddl.auto", "create-drop");
+        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        factoryBean.setJpaVendorAdapter(vendorAdapter);
         factoryBean.setJpaProperties(props);
 
         return factoryBean;
+    }
+
+    @Bean
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+        return new PersistenceExceptionTranslationPostProcessor();
     }
 
     @Bean
@@ -54,4 +75,6 @@ public class JpaConfig {
         transactionManager.setEntityManagerFactory(getEntityManagerFactory().getObject());
         return transactionManager;
     }
+
+
 }
