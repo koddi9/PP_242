@@ -22,9 +22,14 @@
 </table>
 <table>
     <tr>
-        <td> <a th:href="@{/users/{id}/edit(id=${user.getId()})}">Edit User</a> </td>
         <td>
-            <form th:method="delete" th:action="@{/users/{id}(id=${user.getId()})}">
+            <form th:method="GET" th:action="@{/users/{id}/edit(id=${user.getId()})}">
+                <input type="submit" value="Edit User">
+            </form>
+        </td>
+<!--        <a th:href="@{/users/{id}/edit(id=${user.getId()})}">Edit User</a>-->
+        <td>
+            <form th:method="DELETE" th:action="@{/users/{id}(id=${user.getId()})}">
                 <input type="submit" value="Delete User">
             </form>
         </td>

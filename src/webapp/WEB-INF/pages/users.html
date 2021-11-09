@@ -26,6 +26,9 @@
             </tr>
     </th:block>
 </table>
-<a href="/users/new">Add User</a>
+<form th:method="GET" th:action="@{/users/new}">
+    <input type="submit" value="Add User">
+</form>
+<!--<a href="/users/new">Add User</a>-->
 </body>
 </html>
