@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class ServiceImpl implements IService{
 
     IDao dao;
+    List<User> users = new ArrayList<>();
 
     @Autowired
     public ServiceImpl(IDao dao) {
@@ -24,40 +25,60 @@ public class ServiceImpl implements IService{
 
     @Override
     @Transactional
-    public List<Car> getCarsList(String count) {
-        if (count==null){
-            count="5";
-        }
-        List<Car> cars = new ArrayList<>();
-        cars.add(new Car("BMW",5,"gray"));
-        cars.add(new Car("2",2,"black"));
-        cars.add(new Car("3",3,"white"));
-        cars.add(new Car("4",4,"green"));
-        cars.add(new Car("5",5,"red"));
-
-        return cars.stream().limit(Integer.parseInt(count)).collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional
     public List<User> getUsersList(String count) {
-        if (count==null){
-            count="5";
+//        if (count==null){
+//            count="5";
+//        }
+        if(users.size()==0) {
+            users.add(new User("Nick", "Kad", (byte) 24));
+            users.add(new User("Ulya", "Kad", (byte) 26));
+            users.add(new User("Den", "Kad", (byte) 29));
+            for (User user : users) {
+                dao.add(user);
+            }
         }
-        List<User> users = new ArrayList<>();
-       users.add(new User("Nick","Kad",(byte)24));
-       users.add(new User("Ulya","Kad",(byte)26));
-       users.add(new User("Den","Kad",(byte)29));
-
-       for(User user:users){
-           dao.add(user);
-       }
        return dao.listUsers();
 //        return users.stream().limit(Integer.parseInt(count)).collect(Collectors.toList());
     }
 
     @Override
+    @Transactional
     public void add(User user) {
-
+        dao.add(user);
     }
+
+    @Override
+    @Transactional
+    public void delete(long id) {
+        dao.delete(id);
+    }
+
+    @Override
+    @Transactional
+    public void update(User user) {
+        dao.update(user);
+    }
+
+    @Override
+    @Transactional
+    public User getUser(long id) {
+        return dao.getUser(id);
+    }
+
+
+//    @Override
+//    @Transactional
+//    public List<Car> getCarsList(String count) {
+//        if (count==null){
+//            count="5";
+//        }
+//        List<Car> cars = new ArrayList<>();
+//        cars.add(new Car("BMW",5,"gray"));
+//        cars.add(new Car("2",2,"black"));
+//        cars.add(new Car("3",3,"white"));
+//        cars.add(new Car("4",4,"green"));
+//        cars.add(new Car("5",5,"red"));
+//
+//        return cars.stream().limit(Integer.parseInt(count)).collect(Collectors.toList());
+//    }
 }

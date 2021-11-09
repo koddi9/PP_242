@@ -25,12 +25,17 @@ public class DaoImpl implements IDao {
     }
 
     @Override
-    public void delete(User user) {
-        entityManager.detach(user);
+    public void delete(long id) {
+        entityManager.remove(id);
     }
 
     @Override
     public void update(User user) {
-        entityManager.detach(user);
+        entityManager.merge(user);
+    }
+
+    @Override
+    public User getUser(long id) {
+        return entityManager.find(User.class,id);
     }
 }
