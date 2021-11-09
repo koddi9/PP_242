@@ -26,7 +26,7 @@ public class DaoImpl implements IDao {
 
     @Override
     public void delete(long id) {
-        entityManager.remove(id);
+        entityManager.remove(getUser(id));
     }
 
     @Override

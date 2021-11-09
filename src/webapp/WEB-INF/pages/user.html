@@ -5,13 +5,30 @@
     <title>Тайтл-Current user</title>
 </head>
 <body>
+<a href="/users">All Users</a>
 <table>
-        <tr>
-            <td th:text="${user.id}">...</td>
-            <td th:text="${user.firstname}">...</td>
-            <td th:text="${user.lastname}">...</td>
-            <td th:text="${user.age}">...</td>
-        </tr>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Age</th>
+    </tr>
+    <tr>
+        <td th:text="${user.id}">...</td>
+        <td th:text="${user.firstname}">...</td>
+        <td th:text="${user.lastname}">...</td>
+        <td th:text="${user.age}">...</td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <td> <a th:href="@{/users/{id}/edit(id=${user.getId()})}">Edit User</a> </td>
+        <td>
+            <form th:method="delete" th:action="@{/users/{id}(id=${user.getId()})}">
+                <input type="submit" value="Delete User">
+            </form>
+        </td>
+    </tr>
 </table>
 </body>
 </html>

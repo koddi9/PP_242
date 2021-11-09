@@ -7,11 +7,12 @@
 </head>
 <body>
 <table>
-<!--        <td th:text="ID">...</td>-->
-<!--        <td th:text="First Name">...</td>-->
-<!--        <td th:text="Last Name">...</td>-->
-<!--        <td th:text="Age">...</td>-->
-
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Age</th>
+    </tr>
     <th:block th:each="user : ${users}">
             <tr>
                 <td th:text="${user.id}">...</td>
@@ -25,5 +26,6 @@
             </tr>
     </th:block>
 </table>
+<a href="/users/new">Add User</a>
 </body>
 </html>
