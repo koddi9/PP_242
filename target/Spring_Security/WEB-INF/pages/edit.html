@@ -31,13 +31,13 @@
             <td> <label for="password">Password</label></td>
             <td> <input name="password" type="text" id="password" th:field="*{password}"> </td>
         </tr>
-        <tr>
-            <td>
-                <div th:each="role : *{roles}">
-                    <input type="checkbox" th:field="*{roles}"  th:value="*{role.id}" value="on" /><label th:text="*{role.role}">Role1</label>
-                </div>
-            </td>
-        </tr>
+<!--        <tr>-->
+<!--            <td>-->
+<!--                <div th:each="role : *{roles}">-->
+<!--                    <input type="checkbox" th:field="*{roles}"  th:value="*{role.id}" value="on" /><label th:text="*{role.role}">Role1</label>-->
+<!--                </div>-->
+<!--            </td>-->
+<!--        </tr>-->
 
     </table>
     <input type="submit" value="Update User"/>
